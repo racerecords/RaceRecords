@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @event.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @event.description %>
+</p>
+
+<h2>Groups</h2>
+<ul>
+  <% @event.groups.each do |group| %>
+    <li><%= link_to(group.name, group_path(group)) %></li>
+  <% end %>
+</ul>
+
+<%= link_to 'Create Group', new_group_path(event: @event.id) %> |
+<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Back', events_path %>

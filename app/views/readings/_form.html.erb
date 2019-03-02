@@ -1,0 +1,41 @@
+<%= form_with(model: reading, local: true) do |form| %>
+  <% if reading.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(reading.errors.count, "error") %> prohibited this reading from being saved:</h2>
+
+      <ul>
+      <% reading.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if reading.report_id.nil? %>
+    <div class="field">
+      <%= form.label :report_id %>
+      <%= form.text_field :report_id %>
+    </div>
+  <% else %>
+    <%= form.hidden_field :report_id %>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :number %>
+    <%= form.number_field :number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :class %>
+    <%= form.text_field :car_class %>
+  </div>
+
+  <div class="field">
+    <%= form.label :readings %>
+    <%= form.text_field :readings %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

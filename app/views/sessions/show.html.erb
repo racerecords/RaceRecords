@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @session.name %>
+</p>
+
+<h1>Reports</h1>
+<ul>
+  <% if @session.reports.empty? %>
+    <p>No reports</p>
+  <% else %>
+    <% @session.reports.each do |report| %>
+      <li><%= link_to report.id, report_path(report.id) %></li>
+    <% end %>
+  <% end %>
+</ul>
+<%= link_to 'Create Report', new_report_path(session: @session.id) %>
+
+<p>
+  <strong>Group:</strong>
+  <%= link_to @session.group.name, group_path(@session.group.id) %>
+</p>
+
+<%= link_to 'Edit', edit_session_path(@session) %> |
+<%= link_to 'Back', sessions_path %>

@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @group.name %>
+</p>
+
+<p>
+  <strong>Event:</strong>
+  <%= link_to(@group.event.name, event_path(@group.event)) %>
+</p>
+
+<h2>Sessions</h2>
+<ul>
+  <% unless @group.sessions.nil? %>
+    <% @group.sessions.each do |session| %>
+      <li><%= link_to session.name, session_path(session.id) %></li>
+    <% end %>
+  <% end %>
+</ul>
+
+<%= link_to 'New Session', new_session_path(group: @group.id) %> |
+<%= link_to 'Edit', edit_group_path(@group) %> |
+<%= link_to 'Back', groups_path %>

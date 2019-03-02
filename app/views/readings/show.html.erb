@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Report:</strong>
+  <%= @reading.report %>
+</p>
+
+<p>
+  <strong>Number:</strong>
+  <%= @reading.number %>
+</p>
+
+<p>
+  <strong>Class:</strong>
+  <%= @reading.class %>
+</p>
+
+<p>
+  <strong>Readings:</strong>
+  <%= @reading.readings %>
+</p>
+
+<%= link_to 'Edit', edit_reading_path(@reading) %> |
+<%= link_to 'Back', readings_path %>

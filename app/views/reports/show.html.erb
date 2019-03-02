@@ -1,0 +1,98 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Session:</strong>
+  <%= @report.id %>
+</p>
+
+<p>
+  <strong>Classes:</strong>
+  <%= @report.classes %>
+</p>
+
+<p>
+  <strong>Ambient before:</strong>
+  <%= @report.ambient_before %>
+</p>
+
+<p>
+  <strong>Wind direction:</strong>
+  <%= @report.wind_direction %>
+</p>
+
+<p>
+  <strong>Wind speed:</strong>
+  <%= @report.wind_speed %>
+</p>
+
+<p>
+  <strong>Weather:</strong>
+  <%= @report.weather %>
+</p>
+
+<p>
+  <strong>Temp:</strong>
+  <%= @report.temp %>
+</p>
+
+<p>
+  <strong>Humidity:</strong>
+  <%= @report.humidity %>
+</p>
+
+<p>
+  <strong>Barometer:</strong>
+  <%= @report.barometer %>
+</p>
+
+  <% if @report.readings.empty? %>
+    <p>No Readings</p>
+  <% else %>
+    <table>
+      <th>No.</th>
+      <th>Class</th>
+      <th>Readings</th>
+      <tbody>
+        <% @report.readings.each do |reading| %>
+          <tr>
+            <td><%= reading.number %></td>
+            <td><%= reading.class %></td>
+            <td><%= reading.readings %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+  <%= link_to 'Create Reading', new_reading_path(report: @report.id) %>
+<p>
+  <strong>Reader:</strong>
+  <%= @report.reader %>
+</p>
+
+<p>
+  <strong>Recorder:</strong>
+  <%= @report.recorder %>
+</p>
+
+<p>
+  <strong>Site certification date:</strong>
+  <%= @report.site_certification_date %>
+</p>
+
+<p>
+  <strong>Microphone location:</strong>
+  <%= @report.microphone_location %>
+</p>
+
+<p>
+  <strong>Field calibration time:</strong>
+  <%= @report.field_calibration_time %>
+</p>
+
+<p>
+  <strong>Battery level:</strong>
+  <%= @report.battery_level %>
+</p>
+
+<%= link_to 'Edit', edit_report_path(@report) %> |
+<%= link_to 'Back', reports_path %>
