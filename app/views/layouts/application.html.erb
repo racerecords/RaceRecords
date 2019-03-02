@@ -10,7 +10,8 @@
   </head>
 
   <body>
-    <h1><%= self.params['controller'] if Rails.env == 'development' %> <%= self.params['action'] if Rails.env == 'development' %></h1>
+    <%= link_to 'Home', root_path %>
+    <h1><%= self.params['controller'] if RaceRecords::Application.config.env == 'development' %> <%= self.params['action'] if RaceRecords::Application.config.env == 'development' %></h1>
     <%= yield %>
   </body>
 </html>
