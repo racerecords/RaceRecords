@@ -37,6 +37,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'webpacker'
 
 # Reduces boot times through caching; required in config/boot.rb
+gem 'administrate'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development, :test do
