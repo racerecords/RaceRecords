@@ -12,8 +12,6 @@ class CreateReports < ActiveRecord::Migration[5.2]
       t.string :barometer
       t.string :reader
       t.string :recorder
-      t.date :site_certification_date
-      t.string :microphone_location
       t.string :field_calibration_time
       t.string :battery_level
 

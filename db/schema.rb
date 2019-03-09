@@ -17,6 +17,11 @@ ActiveRecord::Schema.define(version: 2019_03_02_193939) do
 
   create_table "events", force: :cascade do |t|
     t.string "name"
+    t.string "track"
+    t.string "region"
+    t.string "site_cert_date"
+    t.date "meter_factory_clibration_date"
+    t.string "microphone_location"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -33,7 +38,6 @@ ActiveRecord::Schema.define(version: 2019_03_02_193939) do
   create_table "readings", force: :cascade do |t|
     t.bigint "report_id"
     t.integer "number"
-    t.string "car_class"
     t.string "readings"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -52,8 +56,6 @@ ActiveRecord::Schema.define(version: 2019_03_02_193939) do
     t.string "barometer"
     t.string "reader"
     t.string "recorder"
-    t.date "site_certification_date"
-    t.string "microphone_location"
     t.string "field_calibration_time"
     t.string "battery_level"
     t.datetime "created_at", null: false
