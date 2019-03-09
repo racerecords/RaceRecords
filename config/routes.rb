@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  namespace :admin do
+      resources :events
+      resources :groups
+      resources :readings
+      resources :reports
+      resources :sessions
+
+      root to: "events#index"
+    end
   root to: 'events#index'
   resources :readings
   resources :reports
