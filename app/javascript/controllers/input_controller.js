@@ -39,7 +39,7 @@ export default class extends Controller {
   }
 
   checkDB() {
-    console.log('check db');
+    var self = this;
     var tx = this.db.transaction('readings', 'readwrite');
     var store = tx.objectStore('readings');
     var index = store.index('by_number');
@@ -48,6 +48,7 @@ export default class extends Controller {
       var cursor = event.target.result;
       if (cursor) {
         console.log(cursor);
+        self.newRow(cursor.value);
         cursor.continue();
       }
     }
@@ -101,22 +102,32 @@ export default class extends Controller {
     return tr;
   }
 
-  addRowChildren(tr) {
-    var inputs = this.getTargets();
-    for (var i = 0; i < inputs.length; i++) {
-      var td = document.createElement('td');
-      td.innerHTML = inputs[i].value;
-      td.dataset.name = inputs[i].name;
-      tr.appendChild(td);
+  addRowChildren(tr, data) {
+    for (var property in data) {
+      if (data.hasOwnProperty(property)) {
+        var td = document.createElement('td');
+        td.innerHTML = data[property];
+        td.dataset.name = property;
+        tr.appendChild(td);
+      }
     }
     return tr;
   }
 
-  newRow() {
+  getInputData() {
+    var inputs = this.getTargets();
+    var data = {};
+    for (var i = 0; i < inputs.length; i++) {
+      data[inputs[i].name] = inputs[i].value;
+    }
+    return data;
+  }
+
+ newRow(data) {
     var tr = document.createElement('tr');
     tr.dataset.target = 'input.tableRow';
     tr.dataset.id = this.data.get('id');
-    var row = this.addRowChildren(tr);
+    var row = this.addRowChildren(tr, data);
     this.tableTarget.appendChild(row);
   }
 
@@ -146,7 +157,7 @@ export default class extends Controller {
     if ( idx >= 0 ) {
       this.updateRow(idx);
     } else {
-      this.newRow();
+      this.newRow(this.getInputData());
     }
   }
 
