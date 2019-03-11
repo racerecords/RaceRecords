@@ -51,13 +51,6 @@
       <th>Readings</th>
       <th>Class</th>
       <tbody>
-        <% @report.readings.each do |reading| %>
-            <tr>
-            <td><%= reading.number %></td>
-            <td><%= reading.class %></td>
-            <td><%= reading.readings %></td>
-          </tr>
-        <% end %>
       </tbody>
     </table>
     <form action="" method="POST" >
