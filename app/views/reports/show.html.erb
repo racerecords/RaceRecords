@@ -45,16 +45,14 @@
   <%= @report.barometer %>
 </p>
 
-  <% if @report.readings.empty? %>
-    <p>No Readings</p>
-  <% else %>
-    <table>
-      <th>No.</th>
-      <th>Class</th>
+  <div data-controller='input'>
+    <table data-target="input.table">
+      <th>Number</th>
       <th>Readings</th>
+      <th>Class</th>
       <tbody>
         <% @report.readings.each do |reading| %>
-          <tr>
+            <tr>
             <td><%= reading.number %></td>
             <td><%= reading.class %></td>
             <td><%= reading.readings %></td>
@@ -62,8 +60,24 @@
         <% end %>
       </tbody>
     </table>
-  <% end %>
-  <%= link_to 'Create Reading', new_reading_path(report: @report.id) %>
+    <form action="" method="POST" >
+        <ul>
+          <li>
+            <label>Number</label>
+            <input  type="number" name="number" placeholder="042" data-action="keypress->input#form" data-target='input.number input.input' required />
+          </li>
+          <li>
+            <label>Reading</label>
+            <input  type="number"  name="reading" placeholder="042" data-action="keypress->input#form" data-target='input.input' />
+          </li>
+          <li>
+            <label>Class</label>
+            <input  type="text"  name="class" placeholder="042" data-action="keypress->input#form" data-target='input.input' />
+          </li>
+        </ul>
+    </form>
+  </div>
+
 <p>
   <strong>Reader:</strong>
   <%= @report.reader %>
@@ -72,16 +86,6 @@
 <p>
   <strong>Recorder:</strong>
   <%= @report.recorder %>
-</p>
-
-<p>
-  <strong>Site certification date:</strong>
-  <%= @report.site_certification_date %>
-</p>
-
-<p>
-  <strong>Microphone location:</strong>
-  <%= @report.microphone_location %>
 </p>
 
 <p>
