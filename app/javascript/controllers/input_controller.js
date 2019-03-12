@@ -7,13 +7,14 @@ export default class extends Controller {
     this.initIDB();
   }
 
-  form() {
+  form(event) {
+    console.log('test');
     if (event.keyCode === 13) {
       event.preventDefault();
       this.data.set('id', this.numberTarget.value);
       this.tableRow()
       this.sortRows();
-      this.nextInput();
+      this.nextInput(event);
       this.saveAllData();
     }
   }
@@ -48,6 +49,7 @@ export default class extends Controller {
       var cursor = event.target.result;
       if (cursor) {
         console.log(cursor);
+        self.data.set('id', cursor.key);
         self.newRow(cursor.value);
         cursor.continue();
       }
@@ -190,7 +192,7 @@ export default class extends Controller {
     input.value = null;
   }
 
-  nextInput() {
+  nextInput(event) {
     var inputs = this.getTargets();
     var idx =inputs.findIndex(function(ele) {
       return ele == event.srcElement
