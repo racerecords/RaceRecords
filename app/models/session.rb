@@ -1,4 +1,4 @@
 class Session < ApplicationRecord
   belongs_to :group
-  has_many :reports
+  has_many :readings
 end

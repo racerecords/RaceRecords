@@ -1,3 +1,3 @@
 class Reading < ApplicationRecord
-  belongs_to :report
+  belongs_to :session
 end

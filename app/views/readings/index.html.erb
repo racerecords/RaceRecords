@@ -16,7 +16,7 @@
   <tbody>
     <% @readings.each do |reading| %>
       <tr>
-        <td><%= reading.report.id %></td>
+        <td><%= reading.session.id %></td>
         <td><%= reading.number %></td>
         <td><%= reading.class %></td>
         <td><%= reading.readings %></td>

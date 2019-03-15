@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2019_03_02_193939) do
     t.string "track"
     t.string "region"
     t.string "site_cert_date"
-    t.date "meter_factory_clibration_date"
+    t.date "meter_factory_calibration_date"
     t.string "microphone_location"
     t.text "description"
     t.datetime "created_at", null: false
@@ -36,16 +36,16 @@ ActiveRecord::Schema.define(version: 2019_03_02_193939) do
   end
 
   create_table "readings", force: :cascade do |t|
-    t.bigint "report_id"
+    t.bigint "session_id"
     t.integer "number"
     t.string "readings"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["report_id"], name: "index_readings_on_report_id"
+    t.index ["session_id"], name: "index_readings_on_session_id"
   end
 
-  create_table "reports", force: :cascade do |t|
-    t.bigint "session_id"
+  create_table "sessions", force: :cascade do |t|
+    t.string "name"
     t.string "classes"
     t.string "ambient_before"
     t.string "wind_direction"
@@ -60,19 +60,11 @@ ActiveRecord::Schema.define(version: 2019_03_02_193939) do
     t.string "battery_level"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["session_id"], name: "index_reports_on_session_id"
-  end
-
-  create_table "sessions", force: :cascade do |t|
-    t.string "name"
     t.bigint "group_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_sessions_on_group_id"
   end
 
   add_foreign_key "groups", "events"
-  add_foreign_key "readings", "reports"
-  add_foreign_key "reports", "sessions"
+  add_foreign_key "readings", "sessions"
   add_foreign_key "sessions", "groups"
 end

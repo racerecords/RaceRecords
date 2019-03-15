@@ -1,21 +1,32 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @session.name %>
-</p>
+<h1>Readings</h1>
 
-<h1>Reports</h1>
-<ul>
-  <% if @session.reports.empty? %>
-    <p>No reports</p>
-  <% else %>
-    <% @session.reports.each do |report| %>
-      <li><%= link_to report.id, report_path(report.id) %></li>
-    <% end %>
-  <% end %>
-</ul>
-<%= link_to 'Create Report', new_report_path(session: @session.id) %>
+<div data-controller='input'>
+	<table class="todo__items"  data-js="todoItems" data-target="input.table">
+		<th>Number</th>
+		<th>Readings</th>
+		<th>Class</th>
+	</table>
+	<form action="" method="POST" data-js="todoForm" >
+			<ul>
+				<li>
+					<label>Number</label>
+					<input type="number" name="number" placeholder="042" data-action="keypress->input#form" data-target='input.number input.input' required />
+				</li>
+				<li>
+					<label>Reading</label>
+					<input type="number"  name="reading" placeholder="042" data-action="keypress->input#form" data-target='input.input' />
+				</li>
+				<li>
+					<label>Class</label>
+					<input type="text"  name="class" placeholder="042" data-action="keypress->input#form" data-target='input.input' />
+				</li>
+			</ul>
+	</form>
+</div>
+
+<%= link_to 'Create Reading', new_reading_path(session: @session.id) %>
 
 <p>
   <strong>Group:</strong>
