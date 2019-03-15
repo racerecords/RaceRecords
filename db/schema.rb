@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2019_03_02_193939) do
     t.bigint "session_id"
     t.integer "number"
     t.string "readings"
+    t.string "car_class"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_readings_on_session_id"

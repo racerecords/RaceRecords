@@ -38,6 +38,7 @@ if Rails.env == 'development'
       10.times do
         Reading.create(session_id: session.id,
                        number: Faker::Number.number(3),
+                       car_class: Faker::Lorem.word,
                        readings: Faker::Number.between(1, 5).times.map do
                          Faker::Number.between(1, 3)
                        end)

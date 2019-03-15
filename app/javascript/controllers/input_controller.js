@@ -3,12 +3,11 @@ import { Controller } from "stimulus"
 export default class extends Controller {
   static targets = [ 'table', 'tableRow', 'input', 'number' ]
 
-  initialize() {
+  connect() {
     this.initIDB();
   }
 
   form(event) {
-    console.log('test');
     if (event.keyCode === 13) {
       event.preventDefault();
       this.data.set('id', this.numberTarget.value);
@@ -16,11 +15,27 @@ export default class extends Controller {
       this.sortRows();
       this.nextInput(event);
       this.saveAllData();
+      this.syncData();
     }
   }
 
+  loadFromServer() {
+    var path = window.location.pathname + '.json'
+    fetch(path)
+      .then(response => response.text())
+      .then(json => {
+        // TODO: check the created date against the IndexDB creation date
+        // If data does not match use the entry with the most recent date
+        // Optionally prompt the user and let them decide which record to use
+        console.log(json);
+      })
+  }
+
+  syncData() {
+    
+  }
+
   initIDB() {
-    console.log('init db');
     var self = this;
     var request = indexedDB.open("records");
 
@@ -29,13 +44,24 @@ export default class extends Controller {
       self.db = request.result;
       var store = self.db.createObjectStore("readings", {keyPath: "number"});
       var numberIndex = store.createIndex("by_number", "number", {unique: true});
-      console.log('Upgrade DB');
     };
 
     request.onsuccess = function() {
       self.db = request.result;
-      console.log('On Success');
       self.checkDB();
+    };
+  }
+
+  saveData(row) {
+    var data = {};
+    for (var i = 0; i < row.children.length; i++) {
+      data[row.children[i].dataset.name] = row.children[i].innerText
+    }
+    var tx = this.db.transaction('readings', 'readwrite');
+    var store = tx.objectStore('readings');
+    // TODO: store the creation date so that it can be checked against the server
+    store.put(data);
+    tx.oncomplete = function() {
     };
   }
 
@@ -48,7 +74,6 @@ export default class extends Controller {
     var request = index.openCursor().onsuccess = function(event) {
       var cursor = event.target.result;
       if (cursor) {
-        console.log(cursor);
         self.data.set('id', cursor.key);
         self.newRow(cursor.value);
         cursor.continue();
@@ -139,19 +164,6 @@ export default class extends Controller {
     rows.forEach(function(row) {
       self.saveData(row);
     });
-  }
-
-  saveData(row) {
-    var data = {};
-    for (var i = 0; i < row.children.length; i++) {
-      data[row.children[i].dataset.name] = row.children[i].innerText
-    }
-    var tx = this.db.transaction('readings', 'readwrite');
-    var store = tx.objectStore('readings');
-    store.put(data);
-    tx.oncomplete = function() {
-      console.log('transaction complete');
-    };
   }
 
   tableRow() {
