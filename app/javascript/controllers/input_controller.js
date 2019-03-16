@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = [ 'table', 'tableRow', 'input', 'number' ]
+  static targets = [ 'table', 'tableRow', 'input', 'number', 'tableBody', 'reading' ]
 
   connect() {
     this.initIDB();
@@ -11,28 +11,11 @@ export default class extends Controller {
     if (event.keyCode === 13) {
       event.preventDefault();
       this.data.set('id', this.numberTarget.value);
-      this.tableRow()
+      this.tableRow(this.getInputData())
       this.sortRows();
       this.nextInput(event);
       this.saveAllData();
-      this.syncData();
     }
-  }
-
-  loadFromServer() {
-    var path = window.location.pathname + '.json'
-    fetch(path)
-      .then(response => response.text())
-      .then(json => {
-        // TODO: check the created date against the IndexDB creation date
-        // If data does not match use the entry with the most recent date
-        // Optionally prompt the user and let them decide which record to use
-        console.log(json);
-      })
-  }
-
-  syncData() {
-    
   }
 
   initIDB() {
@@ -54,12 +37,12 @@ export default class extends Controller {
 
   saveData(row) {
     var data = {};
+    data['updated_at'] = row.dataset.updated_at;
     for (var i = 0; i < row.children.length; i++) {
       data[row.children[i].dataset.name] = row.children[i].innerText
     }
     var tx = this.db.transaction('readings', 'readwrite');
     var store = tx.objectStore('readings');
-    // TODO: store the creation date so that it can be checked against the server
     store.put(data);
     tx.oncomplete = function() {
     };
@@ -75,11 +58,23 @@ export default class extends Controller {
       var cursor = event.target.result;
       if (cursor) {
         self.data.set('id', cursor.key);
-        self.newRow(cursor.value);
+        self.checkLastUpdated(cursor.value);
         cursor.continue();
       }
     }
 
+  }
+
+  checkLastUpdated(data) {
+    var tr = document.getElementById(data['number'])
+    if (tr == null || tr.dataset.updated_at == data['updated_at']) {
+      return
+    }
+    if (tr.dataset.updated_at > data['updated_at']) {
+      this.saveData(tr)
+    }else{
+      this.updateRow(data, true);
+    }
   }
 
   getTargets() {
@@ -89,36 +84,44 @@ export default class extends Controller {
   checkId(arr) {
     var id = this.data.get('id');
     return arr.findIndex(function(ele) { 
-      return ele.dataset.id == id
+      return ele.id == id
     });
   }
 
-  updateRow(idx) {
-    var tr = this.tableRowTargets[idx];
-    tr = this.updateRowChildren(tr);
-    this.tableTarget.appendChild(tr);
+  updateRow(data, force=false) {
+    var tr = document.getElementById(data['number'])
+    tr = this.updateRowChildren(tr, data, force);
+    tr.dataset.updated_at = Math.round(Date.now() / 1000);
+    this.tableBodyTarget.appendChild(tr);
   }
 
-  updateRowChildren(tr) {
-    var inputs = this.getTargets();
+  updateRowChildren(tr, data, force=false) {
     var self = this;
-    for (var i = 0; i < tr.children.length; i++) {
-        inputs.forEach(function (input){
-          if ( tr.children[i].dataset.name == input.name && input.value != '' && input.value != 0) {
-            if (input.name == 'reading') {
-              if (input.value < 0) {
-                var val = tr.children[i].innerText;
-                tr.children[i].innerText = val.replace(Math.abs(input.value), '');
-              } else {
-                tr.children[i].innerText += `   ${input.value}`;
-              }
-              self.clearInput(input);
-            } else {
-              tr.children[i].innerText = input.value;
-            }
-          }
-        });
+    var reading = tr.querySelectorAll('[data-name=reading]')[0]
+    var number = tr.querySelectorAll('[data-name=number]')[0]
+    var car_class = tr.querySelectorAll('[data-name=class]')[0]
+    number.innerText = data['number'];
+    if (data['class'] != '') {
+      car_class.innerText = data['class'];
+    }
+    // replace the reading when force is true
+    if (force == true) {
+      reading.innerText = reading.innerText = data['reading'];
+      return tr;
+    }
+    // Check if reading has a valid value
+    if ( data['reading'] != '' && data['reading'] != 0) {
+      // Check if reading is a counting number
+      if ( data['reading'] < 0 ) {
+        // if negative integer use the absolute value to remove the list
+        reading.innerText = reading.innerText.replace(Math.abs(data['reading']), '');
+      }else{
+        // if positive integer append to the list
+        reading.innerText +=  ` ${data['reading']}`
       }
+      // clear the input to avoid re-using the same entry
+      self.clearInput(this.readingTarget);
+    };
     return tr;
   }
 
@@ -153,9 +156,9 @@ export default class extends Controller {
  newRow(data) {
     var tr = document.createElement('tr');
     tr.dataset.target = 'input.tableRow';
-    tr.dataset.id = this.data.get('id');
+    tr.id = this.data.get('id');
     var row = this.addRowChildren(tr, data);
-    this.tableTarget.appendChild(row);
+    this.tableBodyTarget.appendChild(row);
   }
 
   saveAllData() {
@@ -166,17 +169,17 @@ export default class extends Controller {
     });
   }
 
-  tableRow() {
+  tableRow(data) {
     var idx = this.checkId(this.tableRowTargets);
     if ( idx >= 0 ) {
-      this.updateRow(idx);
+      this.updateRow(data);
     } else {
-      this.newRow(this.getInputData());
+      this.newRow(data);
     }
   }
 
   sortRows() {
-    var table = this.tableTarget;
+    var table = this.tableBodyTarget;
     var rows = this.tableRowTargets;
     rows.sort(function(a,b) {
       var order

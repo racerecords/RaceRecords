@@ -3,27 +3,38 @@
 <h1>Readings</h1>
 
 <div data-controller='input'>
-	<table class="todo__items"  data-js="todoItems" data-target="input.table">
-		<th>Number</th>
-		<th>Readings</th>
-		<th>Class</th>
-	</table>
-	<form action="" method="POST" data-js="todoForm" >
-			<ul>
-				<li>
-					<label>Number</label>
-					<input type="number" name="number" placeholder="042" data-action="keypress->input#form" data-target='input.number input.input' required />
-				</li>
-				<li>
-					<label>Reading</label>
-					<input type="number"  name="reading" placeholder="042" data-action="keypress->input#form" data-target='input.input' />
-				</li>
-				<li>
-					<label>Class</label>
-					<input type="text"  name="class" placeholder="042" data-action="keypress->input#form" data-target='input.input' />
-				</li>
-			</ul>
-	</form>
+  <table class="todo__items"  data-js="todoItems" data-target="input.table">
+    <thead>
+      <th>Number</th>
+      <th>Readings</th>
+      <th>Class</th>
+    </thead>
+    <tbody data-target="input.tableBody">
+      <% @session.readings.each do |reading| %>
+	<tr data-target="input.tableRow" id=<%= reading.number %> data-updated_at="<%= reading.updated_at.to_i %>">
+	  <td data-name="number" ><%= reading.number %></td>
+	  <td data-name="reading" ><%= JSON.parse(reading.readings).join(' ') %></td>
+	  <td data-name="class" ><%= reading.car_class %></td>
+	</tr>
+      <% end %>
+    </tbody>
+  </table>
+  <form action="" method="POST" data-js="todoForm" >
+    <ul>
+      <li>
+	<label>Number</label>
+	<input type="number" name="number" placeholder="042" data-action="keypress->input#form" data-target='input.number input.input' required />
+      </li>
+      <li>
+	<label>Reading</label>
+	<input type="number"  name="reading" placeholder="042" data-action="keypress->input#form" data-target='input.input input.reading' />
+      </li>
+      <li>
+	<label>Class</label>
+	<input type="text"  name="class" placeholder="042" data-action="keypress->input#form" data-target='input.input' />
+      </li>
+    </ul>
+  </form>
 </div>
 
 <%= link_to 'Create Reading', new_reading_path(session: @session.id) %>
