@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2019_03_02_193939) do
     t.string "track"
     t.string "region"
     t.string "site_cert_date"
-    t.date "meter_factory_calibration_date"
+    t.date "meter_factory_clibration_date"
     t.string "microphone_location"
     t.text "description"
     t.datetime "created_at", null: false
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2019_03_02_193939) do
     t.string "car_class"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["session_id"], name: "index_readings_on_session_id"
+    t.index ["session_id", "number"], name: "index_readings_on_session_id", unique: true
   end
 
   create_table "sessions", force: :cascade do |t|
