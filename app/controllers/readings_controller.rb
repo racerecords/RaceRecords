@@ -4,7 +4,7 @@ class ReadingsController < ApplicationController
   # GET /readings
   # GET /readings.json
   def index
-    @readings = Reading.all
+    @readings = Reading.where(session_id: params[:session])
   end
 
   # GET /readings/1
@@ -24,7 +24,12 @@ class ReadingsController < ApplicationController
   # POST /readings
   # POST /readings.json
   def create
-    @reading = Reading.new(reading_params)
+    @reading = Reading.find_by(number: reading_params[:number],
+                    session_id: reading_params[:session_id])
+    if @reading
+      @reading.update(reading_params)
+    end
+    @reading ||= Reading.new(reading_params)
 
     respond_to do |format|
       if @reading.save
@@ -63,12 +68,16 @@ class ReadingsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_session
+      @session = Session.find(params[:session])
+    end
+
     def set_reading
       @reading = Reading.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def reading_params
-      params.require(:reading).permit(:report_id, :number, :car_class, :readings)
+      params.require(:reading).permit(:session_id, :number, :car_class, :readings)
     end
 end

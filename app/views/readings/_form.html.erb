@@ -11,13 +11,13 @@
     </div>
   <% end %>
 
-  <% if reading.report_id.nil? %>
+  <% if reading.session_id.nil? %>
     <div class="field">
-      <%= form.label :report_id %>
-      <%= form.text_field :report_id %>
+      <%= form.label :session_id %>
+      <%= form.text_field :session_id %>
     </div>
   <% else %>
-    <%= form.hidden_field :report_id %>
+    <%= form.hidden_field :session_id %>
   <% end %>
 
   <div class="field">

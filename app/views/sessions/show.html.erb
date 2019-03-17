@@ -2,7 +2,7 @@
 
 <h1>Readings</h1>
 
-<div data-controller='input'>
+<div data-controller='input' data-input-session_id="<%= @session.id %>" data-input-refresh-interval='5000'>
   <table class="todo__items"  data-js="todoItems" data-target="input.table">
     <thead>
       <th>Number</th>
@@ -11,10 +11,10 @@
     </thead>
     <tbody data-target="input.tableBody">
       <% @session.readings.each do |reading| %>
-	<tr data-target="input.tableRow" id=<%= reading.number %> data-updated_at="<%= reading.updated_at.to_i %>">
+	<tr data-target="input.tableRow" id="<%= reading.number %>" data-updated_at="<%= reading.updated_at.to_i %>">
 	  <td data-name="number" ><%= reading.number %></td>
-	  <td data-name="reading" ><%= JSON.parse(reading.readings).join(' ') %></td>
-	  <td data-name="class" ><%= reading.car_class %></td>
+	  <td data-name="readings" ><%= reading.readings %></td>
+	  <td data-name="car_class" ><%= reading.car_class %></td>
 	</tr>
       <% end %>
     </tbody>
@@ -27,11 +27,11 @@
       </li>
       <li>
 	<label>Reading</label>
-	<input type="number"  name="reading" placeholder="042" data-action="keypress->input#form" data-target='input.input input.reading' />
+	<input type="number"  name="readings" placeholder="042" data-action="keypress->input#form" data-target='input.input input.reading' />
       </li>
       <li>
 	<label>Class</label>
-	<input type="text"  name="class" placeholder="042" data-action="keypress->input#form" data-target='input.input' />
+	<input type="text"  name="car_class" placeholder="042" data-action="keypress->input#form" data-target='input.input' />
       </li>
     </ul>
   </form>

@@ -5,6 +5,48 @@ export default class extends Controller {
 
   connect() {
     this.initIDB();
+
+    if (this.data.has('refreshInterval')) {
+      this.sync();
+    }
+  }
+
+  sync() {
+    this.refreshTimer = setInterval(() => {
+      this.load()
+    },this.data.get('refreshInterval'))
+  }
+
+  load() {
+    this.checkDB();
+    var data = this.getTableData();
+    var res = new XMLHttpRequest();
+    var token = document.getElementsByName('csrf-token')[0];
+    res.open('POST', '/readings', true);
+    res.setRequestHeader("Content-Type", "application/json");
+    res.setRequestHeader('X-CSRF-Token', token.content);
+    res.send(data);
+  }
+
+  getTableData() {
+    var data = {};
+    data['session_id'] = this.data.get('session_id')
+    this.tableRowTargets.forEach(function(tr) {
+    for (var i = 0; i < tr.childElementCount; i++) {
+        data[tr.children[i].dataset.name] = tr.children[i].innerText
+      }
+    });
+    return JSON.stringify({reading: data});
+  }
+
+  disconnect() {
+    this.stopRefreshing()
+  }
+
+  stopRefreshing() {
+    if (this.refreshTimer) {
+      clearInterval(this.refreshTimer)
+    }
   }
 
   form(event) {
@@ -62,7 +104,6 @@ export default class extends Controller {
         cursor.continue();
       }
     }
-
   }
 
   checkLastUpdated(data) {
@@ -75,6 +116,7 @@ export default class extends Controller {
     }else{
       this.updateRow(data, true);
     }
+    this.sortRows();
   }
 
   getTargets() {
@@ -97,27 +139,27 @@ export default class extends Controller {
 
   updateRowChildren(tr, data, force=false) {
     var self = this;
-    var reading = tr.querySelectorAll('[data-name=reading]')[0]
+    var reading = tr.querySelectorAll('[data-name=readings]')[0]
     var number = tr.querySelectorAll('[data-name=number]')[0]
-    var car_class = tr.querySelectorAll('[data-name=class]')[0]
+    var car_class = tr.querySelectorAll('[data-name=car_class]')[0]
     number.innerText = data['number'];
-    if (data['class'] != '') {
-      car_class.innerText = data['class'];
+    if (data['car_class'] != '') {
+      car_class.innerText = data['car_class'];
     }
     // replace the reading when force is true
     if (force == true) {
-      reading.innerText = reading.innerText = data['reading'];
+      reading.innerText = reading.innerText = data['readings'];
       return tr;
     }
     // Check if reading has a valid value
-    if ( data['reading'] != '' && data['reading'] != 0) {
+    if ( data['readings'] != '' && data['readings'] != 0) {
       // Check if reading is a counting number
-      if ( data['reading'] < 0 ) {
+      if ( data['readings'] < 0 ) {
         // if negative integer use the absolute value to remove the list
-        reading.innerText = reading.innerText.replace(Math.abs(data['reading']), '');
+        reading.innerText = reading.innerText.replace(Math.abs(data['readings']), '');
       }else{
         // if positive integer append to the list
-        reading.innerText +=  ` ${data['reading']}`
+        reading.innerText +=  ` ${data['readings']}`
       }
       // clear the input to avoid re-using the same entry
       self.clearInput(this.readingTarget);
@@ -181,11 +223,11 @@ export default class extends Controller {
   sortRows() {
     var table = this.tableBodyTarget;
     var rows = this.tableRowTargets;
-    rows.sort(function(a,b) {
-      var order
-      order = a.firstChild.innerText - b.firstChild.innerText;
+    rows = rows.sort(function(a,b) {
+      var order = 0
+      order = a.attributes.id.value - b.attributes.id.value;
       if (order == 0) {
-        order = a.firstChild.innerText.length - b.firstChild.innerText.length;
+        order = a.attributes.id.value.length - b.attributes.id.value.length;
       }
       return order
     });
