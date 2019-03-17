@@ -41,7 +41,7 @@ if Rails.env == 'development'
                        car_class: Faker::Lorem.word,
                        readings: Faker::Number.between(1, 5).times.map do
                          Faker::Number.between(1, 3)
-                       end)
+                       end.join(' '))
       end
     end
   end
