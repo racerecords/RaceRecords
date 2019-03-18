@@ -13,11 +13,11 @@ export default class extends Controller {
 
   sync() {
     this.refreshTimer = setInterval(() => {
-      this.load()
+      this.save()
     },this.data.get('refreshInterval'))
   }
 
-  load() {
+  save() {
     this.checkDB();
     var data = this.getTableData();
     var res = new XMLHttpRequest();
@@ -29,14 +29,16 @@ export default class extends Controller {
   }
 
   getTableData() {
-    var data = {};
-    data['session_id'] = this.data.get('session_id')
+    var data = [];
+    var self = this;
     this.tableRowTargets.forEach(function(tr) {
-    for (var i = 0; i < tr.childElementCount; i++) {
-        data[tr.children[i].dataset.name] = tr.children[i].innerText
+      var row = {session_id: self.data.get('session_id')};
+      for (var i = 0; i < tr.childElementCount; i++) {
+        row[tr.children[i].dataset.name] = tr.children[i].innerText
       }
+      data.push(row);
     });
-    return JSON.stringify({reading: data});
+    return JSON.stringify({reading: {session_id: self.data.get('session_id'), readings: data}});
   }
 
   disconnect() {
