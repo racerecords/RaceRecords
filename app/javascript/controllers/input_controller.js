@@ -38,7 +38,7 @@ export default class extends Controller {
       }
       data.push(row);
     });
-    return JSON.stringify({reading: {session_id: self.data.get('session_id'), readings: data}});
+    return JSON.stringify({session: {id: self.data.get('session_id')}, reading: {readings: data}});
   }
 
   disconnect() {

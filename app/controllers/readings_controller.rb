@@ -24,34 +24,17 @@ class ReadingsController < ApplicationController
   # POST /readings
   # POST /readings.json
   def create
-    if readings_params.present?
-      # Find all readings based on given params
-      # Update all found readings in a transaction
-      # Create new readings for all remaining params
-      Reading.transaction do
-        @readings = Reading.where(session_id: readings_params[:session_id].to_i, number: readings_params[:readings].map { |p| p [:number] }).map do |reading|
-          reading.assign_attributes(readings_params[:readings].find {|p| p[:number].to_i == reading.number })
-          reading
-        end
+    # TODO: REFACTOR: I think some of this can be moved to the model
+    # Find all readings based on given params
+    # Update all found readings in a transaction
+    # Create new readings for all remaining params
+    set_readings
+    assing_reading_params
+    create_objects_for_new_records
+    reject_invalid
+    select_valid
 
-        # Reject parameters which have a matching db record
-        remaining = readings_params[:readings].reject { |p| @readings.map(&:number).include?(p[:number].to_i) }
-        remaining.each do |param|
-          @readings << Reading.new(param)
-        end
-        @readings.select(&:changed?).map &:save!
-      end
-    end
-
-    respond_to do |format|
-      if @reading.save
-        format.html { redirect_to @reading, notice: 'Reading was successfully created.' }
-        format.json { render :show, status: :created, location: @reading }
-      else
-        format.html { render :new }
-        format.json { render json: @reading.errors, status: :unprocessable_entity }
-      end
-    end
+    respons(@rejected.empty?)
   end
 
   # PATCH/PUT /readings/1
@@ -80,12 +63,79 @@ class ReadingsController < ApplicationController
 
   private
 
+  def set_session
+    @session = Session.find(session_params[:id])
+  end
+
+  def session_params
+    params.require(:session).permit(:id)
+  end
+
+  def set_readings
+    reading_numbers = readings_params[:readings].map { |p| p [:number] }
+    @readings = Reading.where(session: session_params[:id],
+                              number: reading_numbers)
+  end
+
+  def assing_reading_params
+    @readings = @readings.map do |reading|
+      reading.assign_attributes(find_number_param(reading))
+      reading
+    end
+  end
+
+  def find_number_param(reading)
+    readings_params[:readings].find do |p|
+      p[:number].to_i == reading.number
+    end
+  end
+
   def set_reading
     @reading = Reading.find(params[:id])
   end
 
+  def create_objects_for_new_records
+    # Reject parameters which have a matching db record
+    remaining = readings_params[:readings].reject do |p|
+      @readings.map(&:number).include?(p[:number].to_i)
+    end
+    remaining.each do |param|
+      @readings << Reading.new(param)
+    end
+  end
+
+  def reject_invalid
+    @rejected = @readings.reject(&:valid?)
+  end
+
+  def respons(success)
+    respond_to do |format|
+      if success
+        format.json { render json: @readings - @rejected, status: :created }
+      else
+        format.json do
+          render json: @rejected.map(&:errors),
+                 status: :unprocessable_entity
+        end
+      end
+    end
+  end
+
+  def save_readings
+    Reading.transaction do
+      @valid_readings.map(&:save)
+    end
+  end
+
+  def select_valid
+    @valid_readings = @readings.select(&:changed?).select(&:valid?)
+  end
+
   def readings_params
-    params.require(:reading).permit(:session_id, readings: [:session_id, :number, :readings, :car_class])
+    params.require(:reading).permit(readings: %i[number
+                                                 readings
+                                                 car_class
+                                                 session_id])
   end
 
   def reading_params
