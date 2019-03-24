@@ -9,9 +9,21 @@ class SessionDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     group: Field::BelongsTo,
-    reports: Field::HasMany,
+    readings: Field::HasMany,
     id: Field::Number,
     name: Field::String,
+    classes: Field::String,
+    ambient_before: Field::String,
+    wind_direction: Field::String,
+    wind_speed: Field::String,
+    weather: Field::String,
+    temp: Field::String,
+    humidity: Field::String,
+    barometer: Field::String,
+    reader: Field::String,
+    recorder: Field::String,
+    field_calibration_time: Field::String,
+    battery_level: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -23,7 +35,7 @@ class SessionDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :group,
-    :reports,
+    :readings,
     :id,
     :name,
   ].freeze
@@ -32,9 +44,21 @@ class SessionDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :group,
-    :reports,
+    :readings,
     :id,
     :name,
+    :classes,
+    :ambient_before,
+    :wind_direction,
+    :wind_speed,
+    :weather,
+    :temp,
+    :humidity,
+    :barometer,
+    :reader,
+    :recorder,
+    :field_calibration_time,
+    :battery_level,
     :created_at,
     :updated_at,
   ].freeze
@@ -44,8 +68,20 @@ class SessionDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :group,
-    :reports,
+    :readings,
     :name,
+    :classes,
+    :ambient_before,
+    :wind_direction,
+    :wind_speed,
+    :weather,
+    :temp,
+    :humidity,
+    :barometer,
+    :reader,
+    :recorder,
+    :field_calibration_time,
+    :battery_level,
   ].freeze
 
   # Overwrite this method to customize how sessions are displayed
