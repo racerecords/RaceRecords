@@ -7,23 +7,30 @@ class ReadingsController < ApplicationController
   # GET /readings.json
   def index
     @readings = Reading.where(session_id: params[:session])
+    authorize @readings
   end
 
   # GET /readings/1
   # GET /readings/1.json
-  def show; end
+  def show
+    authorize Reading
+  end
 
   # GET /readings/new
   def new
-    @reading = Reading.new(report_id: params['report'])
+    @reading = Reading.new(session_id: params['session'])
+    authorize @reading
   end
 
   # GET /readings/1/edit
-  def edit; end
+  def edit
+    authorize Reading
+  end
 
   # POST /readings
   # POST /readings.json
   def create
+    authorize Reading
     # TODO: REFACTOR: I think some of this can be moved to the model
     # Find all readings based on given params
     # Update all found readings in a transaction
@@ -40,6 +47,7 @@ class ReadingsController < ApplicationController
   # PATCH/PUT /readings/1
   # PATCH/PUT /readings/1.json
   def update
+    authorize @reading
     respond_to do |format|
       if @reading.update(reading_params)
         format.html { redirect_to @reading, notice: 'Reading was successfully updated.' }
