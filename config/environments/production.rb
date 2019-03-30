@@ -64,6 +64,8 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "RaceRecords_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
+  # TODO: Update with prod URL
+  config.action_mailer.default_url_options = { host: 'localhost' }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
