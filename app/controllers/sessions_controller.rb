@@ -5,26 +5,31 @@ class SessionsController < ApplicationController
   # GET /sessions.json
   def index
     @sessions = Session.all
+    authorize @sessions
   end
 
   # GET /sessions/1
   # GET /sessions/1.json
   def show
+    authorize Session
   end
 
   # GET /sessions/new
   def new
     @session = Session.new(group_id: params[:group])
+    authorize @session
   end
 
   # GET /sessions/1/edit
   def edit
+    authorize Session
   end
 
   # POST /sessions
   # POST /sessions.json
   def create
     @session = Session.new(session_params)
+    authorize @session
 
     respond_to do |format|
       if @session.save
@@ -40,6 +45,7 @@ class SessionsController < ApplicationController
   # PATCH/PUT /sessions/1
   # PATCH/PUT /sessions/1.json
   def update
+    authorize @session
     respond_to do |format|
       if @session.update(session_params)
         format.html { redirect_to @session, notice: 'Session was successfully updated.' }

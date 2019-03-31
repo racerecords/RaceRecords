@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Name:</strong>
+  <h1>Group:</h1>
   <%= @group.name %>
 </p>
 
@@ -11,13 +11,24 @@
 </p>
 
 <h2>Sessions</h2>
-<ul>
-  <% unless @group.sessions.nil? %>
-    <% @group.sessions.each do |session| %>
-      <li><%= link_to session.name, session_path(session.id) %></li>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @group.sessions.each do |row| %>
+      <tr>
+        <td><%= link_to row.name, session_path(row) %></td>
+        <td><%= link_to 'Edit', edit_session_path(row) %></td>
+        <td><%= link_to 'Destroy', row, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
     <% end %>
-  <% end %>
-</ul>
+  </tbody>
+</table>
 
 <%= link_to 'New Session', new_session_path(group: @group.id) %> |
 <%= link_to 'Edit', edit_group_path(@group) %> |

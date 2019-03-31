@@ -14,7 +14,7 @@ if Rails.env == 'development'
                          site_cert_date: Faker::Date.between(
                            1.year.ago, Date.today
                          ),
-                         meter_factory_clibration_date: Faker::Date.between(
+                         meter_factory_calibration_date: Faker::Date.between(
                            1.year.ago, Date.today
                          ),
                          microphone_location: Faker::Lorem.words,
