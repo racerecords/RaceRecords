@@ -1,8 +1,53 @@
 <p id="notice"><%= notice %></p>
 
+<dl>
+  <dt>Track:</dt>
+  <dd><%= @session.group.event.track %></dd> 
+
+  <dt>Date:</dt>
+  <dd><%= @session.created_at %></dd> 
+
+  <dt>Session:</dt>
+  <dd><%= @session.name %></dd> 
+
+  <% # TODO: add start and end time %>
+  <dt>Session Start: <dt>
+  <dd><%= %></dd>
+
+  <dt>End:</dt>
+  <dd><%= %></dd> 
+
+  <dt>Region:</dt>
+  <dd><%= @session.group.event.region %></dd> 
+
+  <dt>Classes:</dt>
+  <dd><%= JSON.parse(@session.classes).flatten.join(', ') %></dd> 
+
+  <dt>Temprature:</dt>
+  <dd><%= @session.temp %></dd> 
+
+  <dt>Humidity:</dt>
+  <dd><%= @session.humidity %></dd> 
+
+  <dt>Barometer:</dt>
+  <dd><%= @session.barometer %></dd> 
+
+  <dt>Weather:</dt>
+  <dd><%= @session.weather %></dd> 
+
+  <dt>Wind Speed:</dt>
+  <dd><%= @session.wind_speed %></dd> 
+
+  <dt>Wind Direction:</dt>
+  <dd><%= @session.wind_direction %></dd> 
+
+  <dt>Ambient Before:</dt>
+  <dd><%= @session.ambient_before %></dd> 
+</dl>
+
 <h1>Readings</h1>
 
-<div data-controller='input' data-input-session_id="<%= @session.id %>" data-input-refresh-interval='5000'>
+<div data-controller='input' data-input-session_id="<%= @session.id %>" data-input-refresh-interval='50000'>
   <table class="todo__items"  data-js="todoItems" data-target="input.table">
     <thead>
       <th>Number</th>
@@ -36,6 +81,30 @@
     </ul>
   </form>
 </div>
+
+<dl>
+  <dt>Reader:</dt>
+  <dd><%= @session.reader %></dd>
+
+  <dt>Recorder:</dt>
+  <dd><%= @session.recorder %></dd>
+
+  <dt>Site Certification Date</dt>
+  <dd><%= @session.group.event.site_cert_date %></dd>
+
+  <dt>Meter Factory Calibration Date:</dt>
+  <dd><%= @session.group.event.meter_factory_calibration_date %></dd>
+
+  <dt>Field Calibration Time:</dt>
+  <dd><%= @session.field_calibration_time %></dd>
+
+  <dt>Battery Level:</dt>
+  <dd><%= @session.battery_level %></dd>
+
+  <dt>Microphone Location:</dt>
+  <dd><%= @session.group.event.microphone_location %></dd>
+
+</dl>
 
 <%= link_to 'Create Reading', new_reading_path(session: @session.id) %>
 
