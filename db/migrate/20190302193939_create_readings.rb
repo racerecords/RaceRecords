@@ -4,7 +4,7 @@ class CreateReadings < ActiveRecord::Migration[5.0]
     t.string 'track'
     t.string 'region'
     t.string 'site_cert_date'
-    t.date 'meter_factory_clibration_date'
+    t.date 'meter_factory_calibration_date'
     t.string 'microphone_location'
     t.text 'description'
     t.datetime 'created_at', null: false
