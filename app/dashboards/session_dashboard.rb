@@ -12,7 +12,6 @@ class SessionDashboard < Administrate::BaseDashboard
     readings: Field::HasMany,
     id: Field::Number,
     name: Field::String,
-    classes: Field::String,
     ambient_before: Field::String,
     wind_direction: Field::String,
     wind_speed: Field::String,
@@ -26,6 +25,8 @@ class SessionDashboard < Administrate::BaseDashboard
     battery_level: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    start_time: Field::DateTime,
+    end_time: Field::DateTime,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -47,7 +48,6 @@ class SessionDashboard < Administrate::BaseDashboard
     :readings,
     :id,
     :name,
-    :classes,
     :ambient_before,
     :wind_direction,
     :wind_speed,
@@ -61,6 +61,8 @@ class SessionDashboard < Administrate::BaseDashboard
     :battery_level,
     :created_at,
     :updated_at,
+    :start_time,
+    :end_time,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -70,7 +72,6 @@ class SessionDashboard < Administrate::BaseDashboard
     :group,
     :readings,
     :name,
-    :classes,
     :ambient_before,
     :wind_direction,
     :wind_speed,
@@ -82,6 +83,8 @@ class SessionDashboard < Administrate::BaseDashboard
     :recorder,
     :field_calibration_time,
     :battery_level,
+    :start_time,
+    :end_time,
   ].freeze
 
   # Overwrite this method to customize how sessions are displayed

@@ -14,6 +14,7 @@ class GroupDashboard < Administrate::BaseDashboard
     name: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    car_classes: Field::String,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -37,6 +38,7 @@ class GroupDashboard < Administrate::BaseDashboard
     :name,
     :created_at,
     :updated_at,
+    :car_classes,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -46,6 +48,7 @@ class GroupDashboard < Administrate::BaseDashboard
     :event,
     :sessions,
     :name,
+    :car_classes,
   ].freeze
 
   # Overwrite this method to customize how groups are displayed
