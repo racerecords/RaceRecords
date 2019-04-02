@@ -32,7 +32,7 @@ group :development, :test do
   gem 'factory_bot'
   gem 'guard'
   gem 'pry'
-  gem 'rspec'
+  gem 'rspec-rails'
   gem 'rubocop'
 end
 
