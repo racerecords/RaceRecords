@@ -4,24 +4,17 @@
   <dt>Track:</dt>
   <dd><%= @session.group.event.track %></dd> 
 
-  <dt>Date:</dt>
-  <dd><%= @session.created_at %></dd> 
-
   <dt>Session:</dt>
   <dd><%= @session.name %></dd> 
 
-  <% # TODO: add start and end time %>
   <dt>Session Start: <dt>
-  <dd><%= %></dd>
+  <dd><%= @session.start_time %></dd>
 
   <dt>End:</dt>
-  <dd><%= %></dd> 
+  <dd><%= @session.end_time %></dd> 
 
   <dt>Region:</dt>
   <dd><%= @session.group.event.region %></dd> 
-
-  <dt>Classes:</dt>
-  <dd><%= JSON.parse(@session.classes).flatten.join(', ') %></dd> 
 
   <dt>Temprature:</dt>
   <dd><%= @session.temp %></dd> 

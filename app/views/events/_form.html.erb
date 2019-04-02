@@ -17,8 +17,33 @@
   </div>
 
   <div class="field">
+    <%= form.label :track %>
+    <%= form.text_field :track %>
+  </div>
+
+  <div class="field">
+    <%= form.label :region %>
+    <%= form.text_field :region %>
+  </div>
+
+  <div class="field">
+    <%= form.label :site_certification_date %>
+    <%= date_select :event, :site_cert_date, start_year: Date.today.year - 20 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :meter_factory_calibration_date %>
+    <%= date_select :event, :meter_factory_calibration_date, start_year: Date.today.year - 20 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :microphone_location %>
+    <%= form.text_field :microphone_location  %>
+  </div>
+
+  <div class="field">
     <%= form.label :description %>
-    <%= form.text_area :description %>
+    <%= form.text_area :description, size: '30x10' %>
   </div>
 
   <div class="actions">

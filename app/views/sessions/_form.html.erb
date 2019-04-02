@@ -16,6 +16,71 @@
     <%= form.text_field :name %>
   </div>
 
+  <div class="field">
+    <%= form.label :ambient_before %>
+    <%= form.text_field :ambient_before %>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_time %>
+    <%= time_select :session, :start_time %>
+  </div>
+
+  <div class="field">
+    <%= form.label :end_time %>
+    <%= time_select :session, :end_time  %>
+  </div>
+
+  <div class="field">
+    <%= form.label :wind_direction %>
+    <%= form.text_field :wind_direction %>
+  </div>
+
+  <div class="field">
+    <%= form.label :wind_speed %>
+    <%= form.text_field :wind_speed %>
+  </div>
+
+  <div class="field">
+    <%= form.label :weather %>
+    <%= form.text_field :weather %>
+  </div>
+
+  <div class="field">
+    <%= form.label :temp %>
+    <%= form.text_field :temp %>
+  </div>
+
+  <div class="field">
+    <%= form.label :humidity %>
+    <%= form.text_field :humidity %>
+  </div>
+
+  <div class="field">
+    <%= form.label :barometer %>
+    <%= form.text_field :barometer %>
+  </div>
+
+  <div class="field">
+    <%= form.label :reader %>
+    <%= form.text_field :reader %>
+  </div>
+
+  <div class="field">
+    <%= form.label :recorder %>
+    <%= form.text_field :recorder %>
+  </div>
+
+  <div class="field">
+    <%= form.label :field_calibration_time %>
+    <%= form.text_field :field_calibration_time %>
+  </div>
+
+  <div class="field">
+    <%= form.label :battery_level %>
+    <%= form.text_field :battery_level %>
+  </div>
+
   <% if session.group_id.nil? %>
   <div class="field">
     <%= form.label :group_id %>

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class SessionsController < ApplicationController
-  before_action :set_session, only: [:show, :edit, :update, :destroy]
+  before_action :set_session, only: %i[show edit update destroy]
 
   # GET /sessions
   # GET /sessions.json
@@ -68,13 +70,14 @@ class SessionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_session
-      @session = Session.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def session_params
-      params.require(:session).permit(:name, :group_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_session
+    @session = Session.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def session_params
+    params.require(:session).permit(:name, :start_time, :end_time, :group_id, :temp, :humidity, :barometer, :weather, :wind_speed, :wind_direction, :ambient_before)
+  end
 end

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, only: %i[show edit update destroy]
 
   # GET /events
   # GET /events.json
@@ -70,13 +72,18 @@ class EventsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def event_params
-      params.require(:event).permit(:name, :description)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = Event.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet,
+  # only allow the white list through.
+  def event_params
+    params.require(:event).permit(:name, :track, :region,
+                                  :site_certification_date,
+                                  :meter_factory_calibration_date,
+                                  :microphone_location, :description)
+  end
 end

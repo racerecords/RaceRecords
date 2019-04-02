@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateReadings < ActiveRecord::Migration[5.0]
   create_table 'events', force: :cascade do |t|
     t.string 'name'
@@ -26,7 +28,7 @@ class CreateReadings < ActiveRecord::Migration[5.0]
     t.string 'car_class'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
-    t.index ['session_id', 'number'], unique: true, name: 'index_readings_on_session_id'
+    t.index %w[session_id number], unique: true, name: 'index_readings_on_session_id'
   end
 
   create_table 'sessions', force: :cascade do |t|

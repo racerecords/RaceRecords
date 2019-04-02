@@ -16,6 +16,12 @@
     <%= form.text_field :name %>
   </div>
 
+  <p>Comma seperated list</p>
+  <div class="field">
+    <%= form.label :car_classes %>
+    <%= form.text_field :car_classes %>
+  </div>
+
   <% if group.event_id.nil? %>
     <div class="field">
       <%= form.label :event_id %>

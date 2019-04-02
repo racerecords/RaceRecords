@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_30_164657) do
+ActiveRecord::Schema.define(version: 2019_04_02_024254) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 2019_03_30_164657) do
     t.bigint "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "car_classes"
     t.index ["event_id"], name: "index_groups_on_event_id"
   end
 
@@ -47,7 +48,6 @@ ActiveRecord::Schema.define(version: 2019_03_30_164657) do
 
   create_table "sessions", force: :cascade do |t|
     t.string "name"
-    t.string "classes"
     t.string "ambient_before"
     t.string "wind_direction"
     t.string "wind_speed"
@@ -62,6 +62,8 @@ ActiveRecord::Schema.define(version: 2019_03_30_164657) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "group_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.index ["group_id"], name: "index_sessions_on_group_id"
   end
 
