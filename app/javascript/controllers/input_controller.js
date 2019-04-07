@@ -211,6 +211,7 @@ export default class extends Controller {
     rows.forEach(function(row) {
       self.saveData(row);
     });
+    this.save()
   }
 
   tableRow(data) {

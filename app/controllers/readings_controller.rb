@@ -40,6 +40,7 @@ class ReadingsController < ApplicationController
     create_objects_for_new_records
     reject_invalid
     select_valid
+    @readings.map(&:save)
 
     respons(@rejected.empty?)
   end
@@ -88,12 +89,12 @@ class ReadingsController < ApplicationController
 
   def assing_reading_params
     @readings = @readings.map do |reading|
-      reading.assign_attributes(find_number_param(reading))
+      reading.assign_attributes(find_param_by_number(reading))
       reading
     end
   end
 
-  def find_number_param(reading)
+  def find_param_by_number(reading)
     readings_params[:readings].find do |p|
       p[:number].to_i == reading.number
     end
@@ -120,7 +121,7 @@ class ReadingsController < ApplicationController
   def respons(success)
     respond_to do |format|
       if success
-        format.json { render json: @readings - @rejected, status: :created }
+        format.json { render json: @readings, status: :created }
       else
         format.json do
           render json: @rejected.map(&:errors),
