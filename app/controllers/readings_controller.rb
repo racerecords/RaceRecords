@@ -62,6 +62,7 @@ class ReadingsController < ApplicationController
   # DELETE /readings/1
   # DELETE /readings/1.json
   def destroy
+    authorize @reading
     @reading.destroy
     respond_to do |format|
       format.html { redirect_to readings_url, notice: 'Reading was successfully destroyed.' }
