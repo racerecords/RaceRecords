@@ -3,8 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Group, type: :model do
+  let (:group) { build(:group) }
+
   it 'saves car_classes as json' do
-    group = Group.new
     classes = %w[a b]
     group.car_classes = classes
     expect(group.car_classes.class).to eq String
