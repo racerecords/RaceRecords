@@ -3,8 +3,10 @@
   "private": true,
   "dependencies": {
     "@rails/webpacker": "^4.0.2",
+    "eslint": "^5.16.0",
     "stimulus": "^1.1.1",
-    "webpacker": "^4.2.2"
+    "webpacker": "^4.2.3",
+    "yarn": "^1.15.2"
   },
   "version": "1.0.0",
   "main": "index.js",

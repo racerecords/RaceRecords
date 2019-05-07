@@ -22,7 +22,7 @@ gem 'pundit'
 gem 'rails', '~> 5.2.2'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
-gem 'sass-rails', '~> 5.0'
+gem 'sassc-rails'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
 gem 'webpacker'
@@ -49,10 +49,10 @@ end
 
 group :test do
   gem 'capybara', '>= 2.15'
-  gem 'chromedriver-helper'
   gem 'factory_bot'
   gem 'factory_bot_rails'
   gem 'selenium-webdriver'
+  gem 'webdrivers'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
